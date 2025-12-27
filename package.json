@@ -1,0 +1,20 @@
+{
+  "name": "firefly-comments",
+  "version": "0.1.0",
+  "private": false,
+  "scripts": {
+    "dev": "wrangler dev --local",
+    "build": "tsc",
+    "migrate": "wrangler d1 execute firefly_comments --file=migrations/create_tables.sql",
+    "deploy": "wrangler publish",
+    "test-local": "node tests/test_api.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.2025.0",
+    "typescript": "^5.0.0",
+    "wrangler": "^4.56.0"
+  }
+}
