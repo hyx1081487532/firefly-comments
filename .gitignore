@@ -3,3 +3,6 @@ dist/
 .env
 .secrets
 .DS_Store
+.wrangler/tmp/
+.wrangler/state/
+.wrangler/*.sqlite
