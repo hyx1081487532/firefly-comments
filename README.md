@@ -82,6 +82,30 @@ wrangler publish
 <div id="firefly-comments"></div>
 ```
 
+## GitHub Secrets 与分支保护（部署安全）
+
+在将仓库推送到 GitHub 并启用 CI 之前，请务必将敏感凭据添加为仓库 Secrets，避免将明文写入 `wrangler.toml` 或代码中。
+
+- 添加 Secrets：在 GitHub 仓库页面 -> Settings -> Secrets and variables -> Actions -> New repository secret
+	- `CF_API_TOKEN`：Cloudflare API token（需包含 D1 与 Workers 的读写/发布权限）
+	- `ADMIN_PASSWORD`：管理员密码（用于本地测试或 CI 脚本，如果在生产环境下不要在仓库公开）
+
+- 推荐的 Action 配置说明：CI 工作流会在没有 `CF_API_TOKEN` 时跳过迁移与部署步骤，因此在启用自动部署前请先在仓库 Secrets 中添加 `CF_API_TOKEN`。
+
+- 分支保护建议：在 GitHub → Settings → Branches → Branch protection rules 中为 `main` 添加规则：
+	- Require pull request reviews before merging
+	- Require status checks to pass before merging（选择 CI 工作流）
+	- Include administrators（可选）
+
+示例命令（在本地，先登录 wrangler，再把 secret 设置到你的账户或 CI）：
+
+```bash
+# 在本地将管理员密码设置为 Cloudflare Secret（交互式）
+wrangler secret put ADMIN_PASSWORD
+
+# 在 CI（例如 GitHub Actions）中，打开仓库 Settings → Secrets，分别添加 `CF_API_TOKEN` 与 `ADMIN_PASSWORD`。
+```
+
 ## 管理后台
 
 访问 `https://your-worker-domain.workers.dev/admin`，输入管理员密码以查看待审核评论并进行审核或删除。
