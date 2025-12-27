@@ -1,0 +1,18 @@
+name = "firefly-comments"
+compatibility_date = "2025-12-19"
+
+# 使用简单的 JS 文件
+main = "./dist/worker.js"
+
+[vars]
+# ADMIN_PASSWORD is not stored in this file. Use a Cloudflare secret:
+# run `wrangler secret put ADMIN_PASSWORD` to set it in your account
+
+[[d1_databases]]
+binding = "COMMENTS_DB"
+database_name = "firefly_comments"
+database_id = "ebb2b46f-1a1b-4f58-9b2b-7636a2beb794"
+
+# 禁用构建，直接使用现有的 JS 文件
+[build]
+command = "pnpm build"
